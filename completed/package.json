@@ -1,5 +1,5 @@
 {
-  "name": "veb-03",
+  "name": "module_3",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -50,6 +50,5 @@
     "husky": "^2.7.0",
     "lint-staged": "^8.2.1",
     "prettier": "^1.18.2"
-  },
-  "homepage": "https://bohdanradchenko.github.io/goit-react-hw-04-reader/"
+  } 
 }
