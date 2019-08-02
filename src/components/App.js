@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import Reader from './Reader';
 
-class App extends Component {
-  state = {};
-
-  render() {
-    return (
-      <div>
-        <p>App</p>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <Switch>
+    <Route path="/reader" component={Reader} />
+    <Redirect from="/*" to="/reader" />
+  </Switch>
+);
 
 export default App;
