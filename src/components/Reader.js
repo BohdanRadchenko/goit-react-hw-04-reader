@@ -1,29 +1,49 @@
 import React, { Component } from 'react';
+import ReactRouterPropTypes from 'react-router-prop-types';
+import queryString from 'query-string';
 import styles from './Reader.module.css';
 import Publication from './Publication/Publication';
 import Counter from './Counter/Counter';
 import Controls from './Controls/Controls';
 import publication from '../assets/publications.json';
 
+const getPage = location =>
+  Math.floor(Number(queryString.parse(location.search).page));
+
 class Reader extends Component {
+  static propTypes = {
+    location: ReactRouterPropTypes.location.isRequired,
+    history: ReactRouterPropTypes.history.isRequired,
+  };
+
   state = {
     indexValue: 1,
     items: publication,
   };
 
   componentDidMount() {
-    if (localStorage.getItem('indexValue')) {
-      const index = localStorage.getItem('indexValue');
+    const { history, location } = this.props;
+    const { indexValue, items } = this.state;
+    const parsePage = getPage(location);
+    if (parsePage >= 0 && parsePage <= items.length) {
       this.setState({
-        indexValue: JSON.parse(index),
+        indexValue: parsePage,
       });
     }
+    history.replace({
+      ...location,
+      search: `page=${indexValue}`,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { history, location } = this.props;
     const { indexValue } = this.state;
     if (prevState !== this.state) {
-      localStorage.setItem('indexValue', JSON.stringify(indexValue));
+      history.replace({
+        ...location,
+        search: `page=${indexValue}`,
+      });
     }
   }
 
@@ -48,7 +68,6 @@ class Reader extends Component {
   render() {
     const { indexValue, items } = this.state;
     const emptyData = items.length === 0;
-
     return (
       <>
         {!emptyData && (
