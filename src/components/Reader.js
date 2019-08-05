@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import queryString from 'query-string';
@@ -39,10 +40,16 @@ class Reader extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { history, location } = this.props;
     const { indexValue } = this.state;
+    const parsedPage = getPage(location);
     if (prevState !== this.state) {
-      history.replace({
+      history.push({
         ...location,
         search: `page=${indexValue}`,
+      });
+    }
+    if (prevState.indexValue !== parsedPage) {
+      this.setState({
+        indexValue: parsedPage,
       });
     }
   }
